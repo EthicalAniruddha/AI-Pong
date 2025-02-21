@@ -16,7 +16,7 @@ Using raylib for first time. I have made a simple pong game using C++ and raylib
 
 2. **Compile and Run:**
   ```bash
-  git clone https://github.com/EthicalAniruddha/AI-Pong.git && cd PongGame && bash build.bash && /a.out
+  git clone https://github.com/EthicalAniruddha/AI-Pong.git && cd AI-Pong && cd PongGame && bash build.bash && /a.out
 ```
 ## Code 
 
