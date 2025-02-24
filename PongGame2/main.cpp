@@ -53,6 +53,7 @@ int main() {
     int height = 700;
     int width = 1300;
     InitWindow(width, height, "Pong -- EthicalAniruddha");
+    SetWindowState(FLAG_VSYNC_HINT);
     SetTargetFPS(60);
 
     ball.radius = 10;
