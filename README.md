@@ -1,14 +1,16 @@
-# Pong Game with AI
+# Pong Game 2 with AI
 
 Using raylib for first time. I have made a simple pong game using C++ and raylib.
 
 ## Some Features
 
 * Player vs. AI match.
+* Auto match on
 * Added collision for ball with paddle and screen.
-* Added only win condition.
-* Reset the game by pressing spacebar.
-* Displayed framerate.
+* Removed win condition.
+* Removed, reset the game by pressing spacebar.
+* Displayed framerate, ball x and ball y position.
+* Updated UI
 
 ## Build Instructions
 
@@ -16,48 +18,61 @@ Using raylib for first time. I have made a simple pong game using C++ and raylib
 
 2. **Compile and Run:**
   ```bash
-  git clone https://github.com/EthicalAniruddha/AI-Pong.git && cd AI-Pong && cd PongGame && bash build.bash && ./a.out
+  git clone https://github.com/EthicalAniruddha/AI-Pong.git && cd AI-Pong && cd PongGame2 && bash build.bash
 ```
 ## Code 
 
  **Structs:**
  ````bash
- struct Ball
-{
-    float x, y;         // Ball's x and y position
-    float speedx, speedy; // Ball's speed in the x and y directions
-    float radius;       // Ball's radius
+struct Ball { 
+    public:
+    float x, y;
+    float speedX, speedY;
+    float radius;
 
-    void drawCircle() {
-        DrawCircle((int)x, (int)y, radius, WHITE); // Draws the ball
+    void Draw() {
+        DrawCircle(x, y, radius, Yellow);
+    }
+
+    void ResetBall() {
+        x = GetScreenWidth() / 2;
+        y = GetScreenHeight() / 2;
+
+        int speedChoices[2] = {1, -1};
+        speedX = 300, speedY = 300;
+        aiPaddle.speed = 350;
+        humanPaddle.speed = 350;
+        speedX *= speedChoices[GetRandomValue(0, 1)];
+        speedY *= speedChoices[GetRandomValue(0, 1)];
     }
 };
  ````
 
   ````bash
-struct Paddle
-{
-    float x, y;      // Paddle's x and y position (center)
-    float speed;    // Paddle's speed
-    float width, height; // Paddle's width and height
+struct Paddle {
+    public:
+    float x, y;
+    float speed;
+    float height;
+    float width;
 
     Rectangle GetRect() {
-        return Rectangle{(int)x - width/2,(int) y - height/2, width, height}; // Returns the paddle's rectangle for collision detection
+        return Rectangle{x, y, width, height};
     }
 
-    void drawPaddle() {
-        DrawRectangleRec(GetRect(), WHITE); // Draws the paddle
+    void Draw() {
+        DrawRectangleRounded(GetRect(), 0.8, 0, WHITE);
     }
 };
  ````
 
  **Initialization:**
  ````bash
- InitWindow(800, 600, "Pong-Game -- Ethical Aniruddha"); // Creates the game window
+ InitWindow(1300, 700, "Pong-Game -- Ethical Aniruddha"); // Creates the game window
  SetWindowState(FLAG_VSYNC_HINT); // Enables VSync
  ````
 
- **Object Creation:**
+ **Object Creation:** (Almost same as old)
  ````bash
  Ball ball;
 
@@ -84,32 +99,23 @@ rightPaddle.speed = 500;
  const char* winnerText = nullptr; // Stores the winner text
  ````
 
- **GameLoop:**
+ **GameLoop:** (Almost same)
  ````bash
  while (!WindowShouldClose()) {
     .....game logic.....
 }
  ````
 
- **AI Control:(Inefficient maybe?)**
+ **AI Control:(Inefficient maybe?)** (changed)
  ````bash
- if (ball.x > 0) { // AI activation when the ball is on its side
-    int ballCenterY = ball.y + ball.radius;
-    int rightPaddleCenterY = rightPaddle.y + rightPaddle.height / 2;
-
-    if (ballCenterY < rightPaddleCenterY) {
-        rightPaddle.y -= rightPaddle.speed * GetFrameTime();
-    } else if (ballCenterY > rightPaddleCenterY) {
-        rightPaddle.y += rightPaddle.speed * GetFrameTime();
-    }
-
-    if (ball.x > GetScreenWidth()) { // Reset AI position if ball goes off-screen
-        rightPaddle.y = GetScreenHeight() / 2;
-    }
-}
+ if (aiPaddle.y + aiPaddle.height / 2 > ball.y) {
+   aiPaddle.y -= aiPaddle.speed * dt;
+ } else if (aiPaddle.y + aiPaddle.height / 2 <= ball.y) {
+   aiPaddle.y += aiPaddle.speed * dt;
+ }
  ````
 
- ## Controls
+ ## Controls (Change to only UP and DOWN)
 
 * ```W``` to move up.
 * ```S``` to move down.
@@ -125,5 +131,11 @@ rightPaddle.speed = 500;
 
 ## Screenshots
 
+## OLD
 ![App Screenshot](https://github.com/EthicalAniruddha/AI-Pong/blob/main/PongGame/win.png)
+
+## NEW
+![App Screenshot](https://github.com/EthicalAniruddha/AI-Pong/blob/main/PongGame2/ai.png)
+
+![App Screenshot](https://github.com/EthicalAniruddha/AI-Pong/blob/main/PongGame2/autoOn.png)
 
